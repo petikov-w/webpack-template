@@ -1,0 +1,11 @@
+{
+  "name": "webpack-template",
+  "version": "1.0.0",
+  "description": "My template project Vue application",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "author": "Petikov Vladimir",
+  "license": "MIT"
+}
