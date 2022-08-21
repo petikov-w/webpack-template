@@ -1,0 +1,14 @@
+html {
+  //font-family: 'Roboto Slab';
+}
+
+
+.wrapper {
+  h1 {
+    color: $PrimaryColor;
+    font-family: $PrimaryFont;
+    &:hover {
+      color: $HoverColor;
+    }
+  }
+}
