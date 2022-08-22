@@ -27,6 +27,10 @@ module.exports = {   //----- начало -----
     module: {
         rules: [
             {
+                test: /\.html$/i,
+                loader: "html-loader",
+            },
+            {
                 test: /\.(sa|sc|c)ss$/,
                 use: [
                     (mode === 'development') ? "style-loader" : MiniCssExtractPlugin.loader,
@@ -47,18 +51,31 @@ module.exports = {   //----- начало -----
                         },
                     },
                     "sass-loader",
-                    // {
-                    //     loader: 'sass-resources-loader',
-                    //     options: {
-                    //         resources:  path.resolve(__dirname, './src/assets/scss/_vars.scss'),
-                    //     }
-                    // }
                 ],
+            },
+            {
+                test: /\.(png|svg|jpg|jpeg|gif)$/i,
+                type: 'asset/resource',
             },
             {
                 test: /\.(woff|woff2|eot|ttf|otf)$/i,
                 type: 'asset/resource',
             },
+            {
+                test: /\.pug$/,
+                loader: 'pug-loader',
+                // exclude: /(node_modules|bower_components)/,
+            },
+            {
+                test: /\.m?js$/,
+                exclude: /node_modules/,
+                use: {
+                    loader: 'babel-loader',
+                    // options: {
+                    //     presets: ['@babel/preset-env']
+                    // }
+                }
+            }
         ]
     },
     plugins: [
@@ -66,36 +83,18 @@ module.exports = {   //----- начало -----
             filename: '[name].[contenthash].css'
         }),
         new HtmlWebpackPlugin({
-            template: "./src/index.html"
+            template: "./src/index.pug"
         })],
     // Поключение webpack-dev-server для отладки браузере
     devServer: {
 
     },
+    devtool: 'source-map',
+    // optimization: {
+    //     splitChunks: {
+    //         chunks: 'all',
+    //     },
+    // },
 
 }  // ----- конец -----
 
-
-// const config = {
-//     // Точка входа
-//     entry: {
-//         app: './src/index.js'
-//     },
-//     // Точка выхода
-//     output: {
-//         path: path.resolve(__dirname, './dist'),
-//         // filename: 'app.js',
-//         // filename: '[name].js',
-//         publicPath: '/dist'
-//     },
-//     // Подключаемые модули
-//     module: {
-//         rules: []
-//     },
-//     // Поключение webpack-dev-server для отладки браузере
-//     devServer: {
-//         // historyApiFallback: true,
-//         open: true,
-//        //watchFiles: ["./src/*"],
-//     },
-// }
