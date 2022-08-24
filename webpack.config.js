@@ -1,5 +1,6 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const { VueLoaderPlugin } = require("vue-loader");
 const path = require("path");
 
 
@@ -23,9 +24,20 @@ module.exports = {   //----- начало -----
         assetModuleFilename: "assets/[hash][ext][query]",
         clean: true,
     },
+    resolve: {
+        extensions: ['.js','.vue','.json'],
+        alias: {
+            "@": path.resolve('src')
+        }
+    },
     // Подключаемые модули
     module: {
         rules: [
+            {
+                test: /\.vue$/,
+                loader: "vue-loader",
+                exclude: /node_modules/
+            },
             {
                 test: /\.html$/i,
                 loader: "html-loader",
@@ -63,7 +75,19 @@ module.exports = {   //----- начало -----
             },
             {
                 test: /\.pug$/,
-                loader: 'pug-loader',
+                oneOf: [
+                    {
+                        resourceQuery: /^\?vue/,
+                        // use: ['pug-loader']
+                        use: ['pug-plain-loader']
+                    },
+                    {
+                        // use: ['raw-loader', 'pug-loader']
+                        use: ['raw-loader', 'pug-plain-loader']
+                    }
+                ]
+
+                // loader: 'pug-loader',
                 // exclude: /(node_modules|bower_components)/,
             },
             {
@@ -84,7 +108,9 @@ module.exports = {   //----- начало -----
         }),
         new HtmlWebpackPlugin({
             template: "./src/index.pug"
-        })],
+        }),
+        new VueLoaderPlugin()
+    ],
     // Поключение webpack-dev-server для отладки браузере
     devServer: {
 
